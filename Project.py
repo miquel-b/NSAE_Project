@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
@@ -32,27 +32,32 @@ for ind,ai in enumerate(a):
         px.append(x)
         py.append(y)
         l=l/2
+
     for j in range(len(px)):
         if j==len(px)-1:
             ax.plot(px[j],py[j],'--.',color=colors[ind],label=f"angle={ai/np.pi:.2f}*pi")
         else:
             ax.plot(px[j],py[j],'--.',color=colors[ind],)
+
     ax.grid(True)
     ax.set_title(f"Fractal angle variable")
     ax.legend()
 fig1.tight_layout()
 
 fig2,bx = plt.subplots(4)
+
 for ind,ai in enumerate(a):
     px=[]
     py=[]
     l=1
     l0=1
+
     for i in range(iter):
         x,y=fractal(l0,l,ai)
         px.append(x)
         py.append(y)
         l=l/2
+
     for j in range(len(px)):
         bx[ind].plot(px[j],py[j],'--.',color=colors[ind],)
     bx[ind].grid(True)
