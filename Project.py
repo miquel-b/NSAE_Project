@@ -1,63 +1,34 @@
-
-import numpy as np
+import math
 import matplotlib
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
+import numpy as np
 
-def fractal(l0,l,a):
-    px=[l0]
-    py=[0]
-    px.append(l0-l*np.cos(a))
-    py.append(l*np.sin(a))
-    px.append(l0-l*np.cos(-a))
-    py.append(l*np.sin(-a))
-    px.append(px[0])
-    py.append(py[0])
-    return px,py
+def fractal(l, n): #per a que s'assembli mes a un triangle n ha de ser gran
+    angle = np.pi/3
+    x_dots = [-l]
+    y_dots = [x_dots[0]*np.cos(angle)]
+    y_dots1 = [0]
+    y_dots2 = [-x_dots[0]*np.cos(angle)]
+    for i in range(1,n):
+        x_dots.append(-l/(2*i))
+        y_dots.append(x_dots[i]*np.cos(angle))
+        y_dots1.append(0)
+        y_dots2.append(-x_dots[i]*np.cos(angle))
+        plt.plot((x_dots[i-1], -y_dots1[i]), (x_dots[i], -y_dots2[i]), linestyle = "-", marker = ".", markersize = 2.5, linewidth = 0.5)
+        # no acaba de funcionar, mirar si ho ha temps, tampoc es demana
 
+    # plt.scatter(x_dots, y_dots, marker = ".", s = 5)
+    plt.scatter(x_dots, y_dots1, marker = ".", s = 5)
+    # plt.scatter(x_dots, y_dots2, marker = ".", s = 5)
+    plt.plot(x_dots, y_dots, marker = ".", markersize = 2.5, linewidth = 0.5)
+    # plt.plot(x_dots, y_dots1, marker = ".", markersize = 2.5)
+    plt.plot(x_dots, y_dots2, marker = ".", markersize = 2.5, linewidth = 0.5)
+        # plt.plot((x_dots[0], -y_dots2[0]), (x_dots[1], 0), linestyle = "-", marker = ".", markersize = 2.5, linewidth = 0.5)
 
-a=np.linspace(np.pi/3,np.pi/2,4,endpoint=True)
-l=1
-l0=1
-iter=7
-colors = matplotlib.colormaps['Dark2'].colors
+    plt.vlines(x_dots, ymin = y_dots2, ymax = y_dots, linewidth = 0.3, color = "red")
+    
+    plt.show()
+    # return x_dots
 
-fig1, ax = plt.subplots()
-for ind,ai in enumerate(a):
-    px=[]
-    py=[]
-    l=1
-    l0=1
-    for i in range(iter):
-        x,y=fractal(l0,l,ai)
-        px.append(x)
-        py.append(y)
-        l=l/2
-    for j in range(len(px)):
-        if j==len(px)-1:
-            ax.plot(px[j],py[j],'--.',color=colors[ind],label=f"angle={ai/np.pi:.2f}*pi")
-        else:
-            ax.plot(px[j],py[j],'--.',color=colors[ind],)
-    ax.grid(True)
-    ax.set_title(f"Fractal angle variable")
-    ax.legend()
-fig1.tight_layout()
-
-fig2,bx = plt.subplots(4)
-for ind,ai in enumerate(a):
-    px=[]
-    py=[]
-    l=1
-    l0=1
-    for i in range(iter):
-        x,y=fractal(l0,l,ai)
-        px.append(x)
-        py.append(y)
-        l=l/2
-    for j in range(len(px)):
-        bx[ind].plot(px[j],py[j],'--.',color=colors[ind],)
-    bx[ind].grid(True)
-    bx[ind].set_title(f"Fractal angle={ai/np.pi:.2f}*pi")
-
-fig2.tight_layout()
-plt.show()
-
+if __name__=="__main__":
+    fractal(1,100)
