@@ -14,7 +14,7 @@ def fractal(l0,l,a):
     py.append(py[0])
     return px,py
 
-
+if __name__=="__main__":
 a=np.linspace(np.pi/3,np.pi/2,4,endpoint=True)
 l=1
 l0=1
