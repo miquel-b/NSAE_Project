@@ -3,6 +3,14 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 
+#To draw animations 
+# plt.ion()
+# draw
+#plt.pause(~)
+#P,=plt.plot(x,y)
+#for t... clac
+#   p.set_data([x,y])
+
 #Define function that creates the base points of the triangle, it can be called any time a set of triangles is to be created
 def fractal(ox,oy,l0,l,a):
     px=[ox+l]
