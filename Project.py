@@ -4,13 +4,13 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 #Define function that creates the base points of the triangle, it can be called any time a set of triangles is to be created
-def fractal(l0,l,a):
-    px=[l0]
-    py=[0]
-    px.append(l0-l*np.cos(a))
-    py.append(l*np.sin(a))
-    px.append(l0-l*np.cos(-a))
-    py.append(l*np.sin(-a))
+def fractal(ox,oy,l0,l,a):
+    px=[ox+l]
+    py=[oy+0]
+    px.append(ox+l-l*np.cos(a))
+    py.append(oy+l*np.sin(a))
+    px.append(ox+l-l*np.cos(-a))
+    py.append(oy+l*np.sin(-a))
     px.append(px[0])
     py.append(py[0])
     return px,py
@@ -21,6 +21,9 @@ if __name__=="__main__":
     a=np.linspace(np.pi/3,np.pi/2,4,endpoint=True)
     l=1
     l0=1
+    beta=3.5
+    ox=0
+    oy=0
     iter=7 #number of iterations (sub triangles to create
     colors = matplotlib.colormaps['Dark2'].colors # Basic colors used in plotting
     
@@ -31,10 +34,11 @@ if __name__=="__main__":
         l=1
         l0=1
         for i in range(iter):
-            x,y=fractal(l0,l,ai)
+            x,y=fractal(ox,oy,l0,l,ai)
             px.append(x)
             py.append(y)
-            l=l/2
+            ox=l*(beta-1)/beta
+            l=l/beta
     
         for j in range(len(px)): #Plotting of first figure
             if j==len(px)-1:
@@ -56,10 +60,11 @@ if __name__=="__main__":
         l0=1
     
         for i in range(iter):
-            x,y=fractal(l0,l,ai)
+            x,y=fractal(ox,oy,l0,l,ai)
             px.append(x)
             py.append(y)
-            l=l/2
+            ox=l*(beta-1)/beta
+            l=l/beta
     
         for j in range(len(px)):
             bx[ind].plot(px[j],py[j],'--.',color=colors[ind],)
