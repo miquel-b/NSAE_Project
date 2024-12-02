@@ -1,3 +1,4 @@
+
 import math
 import matplotlib
 from matplotlib import pyplot as plt
@@ -10,7 +11,7 @@ def fractal(l, n, angle): #per a que s'assembli mes a un triangle n ha de ser gr
     y_down = [-x_dots[0]*np.cos(angle)]
    
     for i in range(1,n):
-        x_dots.append(-l/(2*i))
+        x_dots.append(-l/(i*2))
         y_up.append(x_dots[i]*np.cos(angle))
         y_mid.append(0)
         y_down.append(-x_dots[i]*np.cos(angle))
@@ -40,31 +41,38 @@ def fractal(l, n, angle): #per a que s'assembli mes a un triangle n ha de ser gr
 
     
 
-    plt.scatter(x_dots_combined, y_dots_combined1, marker = ".", s = 5)
-    plt.plot(x_dots_combined, y_dots_combined1, marker = ".", markersize = 2.5, linewidth = 0.5)    
-    plt.scatter(x_dots_combined, y_dots_combined2, marker = ".", s = 5)
-    plt.plot(x_dots_combined, y_dots_combined2, marker = ".", markersize = 2.5, linewidth = 0.5)    
+    plt.scatter(x_dots_combined, y_dots_combined1, marker = ".", s = 5, color = 'black')
+    plt.plot(x_dots_combined, y_dots_combined1, marker = ".", markersize = 2.5, linewidth = 0.5, color = 'black')    
+    plt.scatter(x_dots_combined, y_dots_combined2, marker = ".", s = 5, color = 'black')
+    plt.plot(x_dots_combined, y_dots_combined2, marker = ".", markersize = 2.5, linewidth = 0.5, color = 'black')
 
     # plt.scatter(x_dots, y_dots, marker = ".", s = 5)
-    plt.scatter(x_dots, y_mid, marker = ".", s = 5)
+    plt.scatter(x_dots, y_mid, marker = ".", s = 5, color = 'black')
     # plt.scatter(x_dots, y_dots2, marker = ".", s = 5)
-    plt.plot(x_dots, y_up, marker = ".", markersize = 2.5, linewidth = 0.5)
+    plt.plot(x_dots, y_up, marker = ".", markersize = 2.5, linewidth = 0.5, color = 'black')
     # plt.plot(x_dots, y_dots1, marker = ".", markersize = 2.5)
-    plt.plot(x_dots, y_down, marker = ".", markersize = 2.5, linewidth = 0.5)
+    plt.plot(x_dots, y_down, marker = ".", markersize = 2.5, linewidth = 0.5, color = 'black')
         # plt.plot((x_dots[0], -y_dots2[0]), (x_dots[1], 0), linestyle = "-", marker = ".", markersize = 2.5, linewidth = 0.5)
 
-    plt.vlines(x_dots, ymin = y_down, ymax = y_up, linewidth = 0.3, color = "red")
+    plt.vlines(x_dots, ymin = y_down, ymax = y_up, linewidth = 0.3, color = "black")
     
     # for i in range(n):
     # plt.fill_between(x_dots, y_up, y_down)
     
-    plt.fill_between([-1, -0.5], [0, 0.25], [0, -0.25])
-    plt.fill_between([-0.5, -0.25], [0, 0.125], [0, -0.125])
+    plt.fill_between([-1, -0.5], [0, 0.25], [0, -0.25], color = 'black')
+    
+    for i in range(1,n+1):
+        plt.fill_between([-l/(i*2), -l/((i+1)*2)], [0,(x_dots[i+1]*np.cos(angle))], [0,-(x_dots[i+1]*np.cos(angle))], color = 'black')
+    
+    # plt.fill_between([-1, -0.5], [0, 0.25], [0, -0.25])
+    # plt.fill_between([-0.5, -0.25], [0, 0.125], [0, -0.125])
+    # plt.fill_between([-0.25, -0.1666666], [0, 0.08333333], [0, -0.0833333])
+    
     # plt.fill_between(x_dots, y_dots_combined2, y_dots_combined1)
     
     plt.show()
     
-    return x_dots,y_up, y_down, x_dots.shape()
+    return x_dots,y_up, y_down
 # (x_dots_combined,
 #         y_dots_combined1,
 #         y_dots_combined2, x_dots)
@@ -75,4 +83,4 @@ def fractal(l, n, angle): #per a que s'assembli mes a un triangle n ha de ser gr
 # plt.plot(x, y, marker = ".", markersize = 2.5, linewidth = 0.5) 
 
 # if __name__=="__main__":
-    
+
