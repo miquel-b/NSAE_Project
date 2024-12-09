@@ -26,14 +26,15 @@ def fractal(ox,oy,l0,l,a):
 #runs script normally, it allows the function above to be called as an import function
 if __name__=="__main__":
     #Create a set of 4 angles 
-    a=np.linspace(np.pi/3,np.pi/2,4,endpoint=True)
+    n=4
+    a=np.linspace(np.pi/3,np.pi/2,n,endpoint=True)
     l=1
     l0=1
-    beta=3.5
+    beta=2.5
     ox=0
     oy=0
-    iter=7 #number of iterations (sub triangles to create
-    colors = matplotlib.colormaps['Dark2'].colors # Basic colors used in plotting
+    iter=80 #number of iterations (sub triangles to create
+    colors = plt.cm.viridis(np.linspace(0, 1, iter * 3)) # Basic colors used in plotting
     
     fig1, ax = plt.subplots() #First figure all of the triangles toghether
     for ind,ai in enumerate(a): #Creation of diferent triangles with ai angles
@@ -41,18 +42,22 @@ if __name__=="__main__":
         py=[]
         l=1
         l0=1
+        ox=0
+        oy=0
         for i in range(iter):
             x,y=fractal(ox,oy,l0,l,ai)
             px.append(x)
             py.append(y)
-            ox=l*(beta-1)/beta
+            ox=ox+l*(beta-1)/beta
             l=l/beta
+            #l=l/2
+            #ox=ox+l
     
         for j in range(len(px)): #Plotting of first figure
             if j==len(px)-1:
-                ax.plot(px[j],py[j],'--.',color=colors[ind],label=f"angle={ai/np.pi:.2f}*pi")
+                ax.plot(px[j],py[j],'--.',color=colors[ind % len(colors)],label=f"angle={ai/np.pi:.2f}*pi")
             else:
-                ax.plot(px[j],py[j],'--.',color=colors[ind],)
+                ax.plot(px[j],py[j],'--.',color=colors[ind % len(colors)],)
     
         ax.grid(True)
         ax.set_title(f"Fractal angle variable")
