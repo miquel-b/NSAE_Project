@@ -37,7 +37,7 @@ def fractal(ox, oy, l,angle,beta, depth):
         triangles += fractal(ox + (l*(beta-1)/beta)*np.cos(angle), oy + height, half_length,angle,beta, depth - 1)
         return triangles
 
-def plot_sierpinski(triangles, colors):
+def plot_sierpinski(triangles, colors,d):
     """
     Plot the generated Sierpinski triangles.
 
@@ -48,17 +48,19 @@ def plot_sierpinski(triangles, colors):
     fig, ax = plt.subplots(figsize=(8, 8))
     for idx, triangle in enumerate(triangles):
         x, y = zip(*triangle)  # Unzip into x and y
-        ax.plot(x, y, color=colors[idx % len(colors)])
-        plt.pause(0.05)
+        ax.plot(x, y,color=colors[idx % len(colors)])
+        ax.fill(x,y,color=colors[idx % len(colors)])
+        #plt.pause(0.0005)
     ax.set_aspect('equal')
     ax.axis('on')  # Hide axes for a cleaner look
     plt.title("Sierpinski Triangle")
+    plt.suptitle(f'Dimension {d:.10f}')
     plt.show()
 
 if __name__ == "__main__":
     # Parameters
-    base_length = 10  # Length of the base of the initial triangle
-    depth = 6  # Number of iterations
+    base_length = 1  # Length of the base of the initial triangle
+    depth = 3  # Number of iterations
     origin_x = 0  # Starting x-coordinate
     origin_y = 0  # Starting y-coordinate
     angle=np.pi/3
@@ -67,6 +69,11 @@ if __name__ == "__main__":
 
     # Generate the Sierpinski triangle
     triangles = fractal(origin_x, origin_y, base_length,angle,beta,depth)
-
+    
+    #Calculate dimension
+    Nn=3**depth
+    Ln=base_length*(2**(-depth))
+    d=np.log(Nn)/np.log(Ln)
+    print(d)
     # Plot the result
-    plot_sierpinski(triangles, colors)
+    plot_sierpinski(triangles, colors,d)
