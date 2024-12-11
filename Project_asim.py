@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def fractal(ox, oy, l,angle,beta, depth):
+def fractal(ox, oy, l,a1,a2,a3,beta, depth):
     """
     Recursive function to generate the points for the Sierpinski triangle.
     
@@ -16,7 +16,7 @@ def fractal(ox, oy, l,angle,beta, depth):
     if depth == 0:
         # Base case: Draw a single triangle
         half_length = l / beta
-        height = (np.cos(angle/2)) * l
+        height = (np.cos(a1/2)) * l
         points = [
             (ox, oy),  # Bottom-left
             (ox + l, oy),  # Bottom-right
@@ -27,17 +27,17 @@ def fractal(ox, oy, l,angle,beta, depth):
     else:
         # Recursive case: Divide into 3 smaller triangles
         half_length = l / beta
-        height = (np.cos(angle/2)) * half_length
+        height = (np.cos(a1/2)) * half_length
         triangles = []
         # Bottom-left triangle
-        triangles += fractal(ox, oy, half_length,angle,beta, depth - 1)
+        triangles += fractal(ox, oy, half_length,a2,a2,a3,beta, depth - 1)
         # Bottom-right triangle
-        triangles += fractal(ox + l*(beta-1)/beta, oy, half_length,angle,beta,depth - 1)
+        triangles += fractal(ox + l*(beta-1)/beta, oy, half_length,a3,a1,a2,beta,depth - 1)
         # Top triangle
-        triangles += fractal(ox + (l*(beta-1)/beta)*np.cos(angle), oy + height, half_length,angle,beta, depth - 1)
+        triangles += fractal(ox + (l*(beta-1)/beta)*np.cos(a1), oy + height, half_length,a1,a2,a3,beta, depth - 1)
         return triangles
 
-def plot_sierpinski(triangles, colors,d,angle,beta,depth):
+def plot_sierpinski(triangles, colors,d,angle,beta):
     """
     Plot the generated Sierpinski triangles.
 
@@ -54,17 +54,18 @@ def plot_sierpinski(triangles, colors,d,angle,beta,depth):
     ax.set_aspect('equal')
     ax.axis('on')  # Hide axes for a cleaner look
     plt.title("Sierpinski Triangle")
-    plt.suptitle(f'Dimension {d:.3f}\nAngle=pi/{np.pi/angle:.1f}\nBeta={beta:.2f}\nDepth={depth:.0f}')
-    plt.savefig(f'media/images/plt/Triangle_pi{np.pi/angle:.0f}_beta_{beta:.0f}_depth{depth:.0f}.png', bbox_inches='tight')
+    plt.suptitle(f'Dimension {d:.10f}\nAngle=pi/{np.pi/angle:.1f}\nBeta={beta:.2f}')
     plt.show()
 
 if __name__ == "__main__":
     # Parameters
     base_length = 1  # Length of the base of the initial triangle
-    depth = 5  # Number of iterations
+    depth = 3  # Number of iterations
     origin_x = 0  # Starting x-coordinate
     origin_y = 0  # Starting y-coordinate
-    angle=np.pi/3
+    a1=-np.pi/3
+    a2=-np.pi/4
+    a3=-(np.pi-a1-a2)
     beta=2
     colors = plt.cm.viridis(np.linspace(0, 1, depth * 3))  # Generate color gradient
 
@@ -74,9 +75,8 @@ if __name__ == "__main__":
     Ln=base_length*(2**(-depth))
     d=np.log(Nn)/np.log(Ln)
     print(d)
-    for ai,bi in zip(np.linspace(np.pi/2,np.pi/3,4),np.linspace(2,2,4)):
         # Generate the Sierpinski triangle
-        triangles = fractal(origin_x, origin_y, base_length,ai,bi,depth)
+    triangles = fractal(origin_x, origin_y, base_length,a1,a2,a3,beta,depth)
 
         # Plot the result
-        plot_sierpinski(triangles, colors,d,ai,bi,depth)
+    plot_sierpinski(triangles, colors,d,a1,beta)
