@@ -7,7 +7,7 @@ class Sierpinski(Scene):
     def construct(self):
         # Parameters
         base_length = 8  # Adjust for better visualization in Manim
-        depth = 6
+        depth = 7
         origin_x = -3  # Center the fractal
         origin_y = -3
         angle = np.pi / 3
@@ -32,7 +32,7 @@ class Sierpinski(Scene):
                 color=hex_color,
                 fill_opacity=0.8
             )
-            self.play(DrawBorderThenFill(triangle_polygon), run_time=0.1)
-            self.wait(0.01)
+            self.play(DrawBorderThenFill(triangle_polygon), run_time=0.1/(idx+1))
+            self.wait(0.01/(idx+1))
 
         self.wait(2)  # Hold the final frame

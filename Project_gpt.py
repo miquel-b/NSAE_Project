@@ -51,12 +51,15 @@ def plot_sierpinski(triangles, colors,d,angle,beta,depth):
         ax.plot(x, y,color=colors[idx % len(colors)])
         ax.fill(x,y,color=colors[idx % len(colors)])
         #plt.pause(0.0005)
-    ax.set_aspect('equal')
+    ax.set_aspect('auto')
+    ax.set_adjustable('box')
     ax.axis('on')  # Hide axes for a cleaner look
+    ax.set_ylim(0,max(y))
     plt.title("Sierpinski Triangle")
     plt.suptitle(f'Dimension {d:.3f}\nAngle=pi/{np.pi/angle:.1f}\nBeta={beta:.2f}\nDepth={depth:.0f}')
     plt.savefig(f'media/images/plt/Triangle_pi{np.pi/angle:.0f}_beta_{beta:.0f}_depth{depth:.0f}.png', bbox_inches='tight')
     plt.show()
+    plt.close()
 
 if __name__ == "__main__":
     # Parameters
@@ -74,9 +77,22 @@ if __name__ == "__main__":
     Ln=base_length*(2**(-depth))
     d=np.log(Nn)/np.log(Ln)
     print(d)
-    for ai,bi in zip(np.linspace(np.pi/2,np.pi/3,4),np.linspace(2,2,4)):
+    dimension=[]
+    beta=[]
+    for ai,bi in zip(np.linspace(np.pi/3,np.pi/3,1),np.linspace(3,3,1)):
         # Generate the Sierpinski triangle
         triangles = fractal(origin_x, origin_y, base_length,ai,bi,depth)
-
+        Nn=3**depth
+        Ln=(1/bi)**depth
+        d=-np.log(Nn)/np.log(Ln)
+        dimension.append(d)
+        beta.append(bi)
         # Plot the result
         plot_sierpinski(triangles, colors,d,ai,bi,depth)
+
+#    fig, ax = plt.subplots(figsize=(8, 8))
+#    ax.plot(beta,dimension,'*-')
+#    ax.set_xlabel('beta')
+#    ax.set_ylabel('dimension')
+#    plt.title("Dimension vs beta")
+#    plt.show()
